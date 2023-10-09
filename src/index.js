@@ -7,6 +7,7 @@ const refs = {
   target: document.querySelector('.js-guard'),
 };
 let currentPage = 1;
+const perPage = 40;
 let searchQuery = '';
 
 let options = {
@@ -45,7 +46,7 @@ function onLoad(entries, observer) {
 
 async function getImages(search) {
   try {
-    const data = await findImages(search, currentPage);
+    const data = await findImages(search, perPage, currentPage);
     if (!data.hits.length) {
       showError(
         'Sorry, there are no images matching your search query. Please try again.',
@@ -62,7 +63,7 @@ async function getImages(search) {
       );
     }
     observer.observe(refs.target);
-    if (data.totalHits <= currentPage * data.hits.length) {
+    if (data.totalHits <= currentPage * perPage) {
       showInfo(
         "We're sorry, but you've reached the end of search results.",
         'center-bottom'
